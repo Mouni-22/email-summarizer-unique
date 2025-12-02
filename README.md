@@ -14,3 +14,14 @@ Lightweight Flask starter that summarizes text using an extractive summarizer (L
 
 ## API
 `POST /api/summarize` JSON `{ "text": "...", "sentences": 3 }` → `{ "summary": "..." }`
+---
+
+## 🚀 Live Demo
+
+Try the hosted Email Summarizer here:
+
+👉 **https://email-summarizer-unique.onrender.com**
+
+Paste any long email or text and click **Summarize** to generate a concise extractive summary.
+
+[![Live demo](https://img.shields.io/badge/demo-live-brightgreen)](https://email-summarizer-unique.onrender.com)
