@@ -1,0 +1,56 @@
+                <!doctype html>
+                <html>
+                <head>
+                  <meta charset="utf-8"/>
+                  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+                  <title>Email Summarizer (unique)</title>
+                  <style>
+                    body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:18px}
+                    textarea{width:100%;height:240px;padding:8px;font-size:14px}
+                    .row{display:flex;gap:8px;align-items:center;margin-top:8px}
+                    button{padding:8px 12px}
+                    pre{white-space:pre-wrap;background:#f6f6f6;padding:12px;border-radius:6px}
+                  </style>
+                </head>
+                <body>
+                  <h1>Email Summarizer — unique starter</h1>
+                  <p>Paste an email or long text and click <strong>Summarize</strong>.</p>
+                  <textarea id="input" placeholder="Paste email text here..."></textarea>
+                  <div class="row">
+                    <label>Sentences: <input id="sentences" type="number" value="3" min="1" style="width:72px;margin-left:6px"></label>
+                    <button id="go">Summarize</button>
+                    <button id="example">Load example</button>
+                  </div>
+                  <h3>Summary</h3>
+                  <pre id="out">—</pre>
+
+                  <script>
+                    document.getElementById('go').onclick = async () => {
+                      const text = document.getElementById('input').value;
+                      const sentences = document.getElementById('sentences').value;
+                      const res = await fetch('/api/summarize', {
+                        method: 'POST',
+                        headers: {'Content-Type':'application/json'},
+                        body: JSON.stringify({text, sentences})
+                      });
+                      const j = await res.json();
+                      if (res.ok) document.getElementById('out').textContent = j.summary;
+                      else document.getElementById('out').textContent = 'Error: ' + (j.error || JSON.stringify(j));
+                    };
+                    document.getElementById('example').onclick = () => {
+                      document.getElementById('input').value =
+`Hi team,
+
+I wanted to follow up about the user-onboarding flow we discussed last week. The current funnel shows high drop-off on step 2 where users must upload their profile picture. I propose we:
+1) move the upload to the profile completion step after signup,
+2) add a skip option with a reminder email after 48 hours,
+3) A/B test a smaller image size and a progress indicator.
+
+If we do these, we should see improved completion and conversion. Happy to implement a PoC this week.
+
+Thanks,
+Sara`;
+                    };
+                  </script>
+                </body>
+                </html>
